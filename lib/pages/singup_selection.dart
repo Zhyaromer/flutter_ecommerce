@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/pages/user_signup.dart';
+import 'package:flutter_ecommerce/pages/vendor_signup.dart';
 
 enum UserRole { buyer, vendor, none }
 
@@ -81,7 +82,12 @@ class _SignupSelectionState extends State<SignupSelection> {
                               ),
                             );
                           } else if (selectedRole == UserRole.vendor) {
-                            Navigator.pushNamed(context, '/signup_vendor');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MultiStepVendorSignUp(),
+                              ),
+                            );
                           }
                         },
                   style: ElevatedButton.styleFrom(
