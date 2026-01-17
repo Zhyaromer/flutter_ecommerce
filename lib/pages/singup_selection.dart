@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce/pages/user_signup.dart';
 
 enum UserRole { buyer, vendor, none }
 
@@ -69,7 +70,20 @@ class _SignupSelectionState extends State<SignupSelection> {
                       : [],
                 ),
                 child: ElevatedButton(
-                  onPressed: selectedRole == UserRole.none ? null : () {},
+                  onPressed: selectedRole == UserRole.none
+                      ? null
+                      : () {
+                          if (selectedRole == UserRole.buyer) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignUpPageUser(),
+                              ),
+                            );
+                          } else if (selectedRole == UserRole.vendor) {
+                            Navigator.pushNamed(context, '/signup_vendor');
+                          }
+                        },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurpleAccent,
                     disabledBackgroundColor: Colors.grey[800],
