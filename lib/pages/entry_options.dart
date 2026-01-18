@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/pages/Login.dart';
+import 'package:flutter_ecommerce/pages/home.dart';
 import 'package:flutter_ecommerce/pages/singup_selection.dart';
 
 class EntryOptions extends StatelessWidget {
@@ -18,7 +19,10 @@ class EntryOptions extends StatelessWidget {
                   alignment: Alignment.topRight,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/HomePage');
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => Home()),
+                      );
                     },
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 15),
