@@ -1,7 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce/components/ui/mainpage_list.dart';
 import 'package:flutter_ecommerce/components/ui/search_field.dart';
+import 'package:flutter_ecommerce/model/Products.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -12,12 +12,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final TextEditingController _searchController = TextEditingController();
-  Timer? _debounce;
 
   @override
   void dispose() {
     _searchController.dispose();
-    _debounce?.cancel();
     super.dispose();
   }
 
@@ -27,10 +25,7 @@ class _HomeState extends State<Home> {
   }
 
   void _search(String query) {
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
-      print('Searching for: $query');
-    });
+    print('Searching for: $query');
   }
 
   @override
@@ -39,11 +34,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: const Text(
           'Discover Products',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.deepPurpleAccent,
@@ -53,11 +44,7 @@ class _HomeState extends State<Home> {
           Stack(
             children: [
               IconButton(
-                icon: const Icon(
-                  Icons.shopping_cart_rounded,
-                  color: Colors.white,
-                  size: 28,
-                ),
+                icon: const Icon(Icons.shopping_cart_rounded, color: Colors.white, size: 28),
                 onPressed: () {
                   // Navigate to cart page
                 },
@@ -67,14 +54,8 @@ class _HomeState extends State<Home> {
                 top: 0,
                 child: Container(
                   padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  constraints: const BoxConstraints(
-                    minWidth: 16,
-                    minHeight: 16,
-                  ),
+                  decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(10)),
+                  constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
                   child: const Text(
                     '3',
                     style: TextStyle(color: Colors.white, fontSize: 10),
@@ -122,10 +103,7 @@ class _HomeState extends State<Home> {
                   children: [
                     Container(
                       height: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[900],
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+                      decoration: BoxDecoration(color: Colors.grey[900], borderRadius: BorderRadius.circular(15)),
                       child: Center(
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
@@ -139,60 +117,22 @@ class _HomeState extends State<Home> {
 
                     const SizedBox(height: 20),
 
-                    Container(
-                      height: 300,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[900],
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: GridView.builder(
-                              padding: const EdgeInsets.all(10),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 10,
-                                    childAspectRatio: 0.7,
-                                  ),
-                              itemCount: 2,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Expanded(
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            10,
-                                          ),
-                                          child: Image.network(
-                                            'https://m.media-amazon.com/images/I/51BcAOQs+PL._AC_UL320_.jpg',
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'Product ${index + 1}',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                    ProductsList(
+                      mockData: mockProducts,
+                      title: 'Best Selling',
+                      navigate: () {
+                        // Navigate to see all best selling products
+                      },
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    ProductsList(
+                      mockData: mockProducts2,
+                      title: 'Recommended for You',
+                      navigate: () {
+                        // Navigate to see all best selling products
+                      },
                     ),
                   ],
                 ),

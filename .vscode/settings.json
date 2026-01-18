@@ -1,0 +1,9 @@
+{
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "Dart-Code.dart-code",
+        "editor.wordWrap": "off"
+    },
+    "dart.lineLength": 120,
+    "editor.wordWrap": "off"
+}
