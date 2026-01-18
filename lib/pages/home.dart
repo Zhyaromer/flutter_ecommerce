@@ -134,6 +134,95 @@ class _HomeState extends State<Home> {
                         // Navigate to see all best selling products
                       },
                     ),
+
+                    const SizedBox(height: 20),
+
+                    Container(
+                      height: 240,
+                      width: double.infinity,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                      child: Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.network(
+                            'https://www.zilliondesigns.com/blog/wp-content/uploads/Ecommerce-sales-banner.png',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // category in here
+                    SizedBox(
+                      height: 400,
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Container(
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.blueGrey[800], // Different color so you can see it
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Image.network(
+                                  'https://graphicsfamily.com/wp-content/uploads/edd/2021/07/Professional-E-Commerce-Shoes-Banner-Design.jpg',
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(width: 10), // Horizontal spacer for Row
+                          // RIGHT SIDE: Two stacked boxes
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blueGrey[700],
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: Image.network(
+                                        'https://static.vecteezy.com/system/resources/previews/062/687/510/non_2x/vibrant-square-green-mega-sale-banner-with-floating-abstract-shapes-and-bold-typography-ideal-for-seasonal-sales-ecommerce-promos-and-ad-campaigns-vector.jpg',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                const SizedBox(height: 10),
+
+                                Expanded(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blueGrey[700],
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: Image.network(
+                                        'https://static.vecteezy.com/system/resources/thumbnails/062/687/720/small/minimal-white-background-square-mega-sale-banner-with-floating-3d-platform-ideal-for-product-promotion-modern-ecommerce-and-clean-marketing-layouts-vector.jpg',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
