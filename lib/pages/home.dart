@@ -1,7 +1,5 @@
-import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ecommerce/components/ui/Card.dart';
 import 'package:flutter_ecommerce/components/ui/mainpage_list.dart';
 import 'package:flutter_ecommerce/components/ui/search_field.dart';
 import 'package:flutter_ecommerce/components/ui/sections_card.dart';
@@ -19,6 +17,17 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final TextEditingController _searchController = TextEditingController();
 
+  void _search(String query) {
+    // ignore: avoid_print
+    print('Searching for: $query');
+  }
+
+  List<Map<String, dynamic>> exclusiveOffers = [
+    {'title': 'Electronics Deals', 'products': mockProducts3},
+    {'title': 'Fashion Finds', 'products': mockProducts3},
+    {'title': 'Home Essentials', 'products': mockProducts3},
+  ];
+
   @override
   void dispose() {
     _searchController.dispose();
@@ -29,16 +38,6 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
   }
-
-  void _search(String query) {
-    print('Searching for: $query');
-  }
-
-  List<Map<String, dynamic>> exclusiveOffers = [
-    {'title': 'Electronics Deals', 'products': mockProducts3},
-    {'title': 'Fashion Finds', 'products': mockProducts3},
-    {'title': 'Home Essentials', 'products': mockProducts3},
-  ];
 
   @override
   Widget build(BuildContext context) {
