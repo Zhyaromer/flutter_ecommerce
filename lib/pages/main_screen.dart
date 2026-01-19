@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce/pages/all_Categories.dart';
 import 'package:flutter_ecommerce/pages/home.dart';
 
 class MainScreen extends StatefulWidget {
@@ -13,9 +14,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _pages = [
     const Home(),
-    const Center(
-      child: Text('Categories', style: TextStyle(color: Colors.white)),
-    ),
+    const AllCategories(),
     const Center(
       child: Text('Orders', style: TextStyle(color: Colors.white)),
     ),
@@ -40,7 +39,7 @@ class _MainScreenState extends State<MainScreen> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Categories'),
-          BottomNavigationBarItem(icon: Icon(Icons.receipt_long), label: 'Orders'),
+          BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Stores'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
