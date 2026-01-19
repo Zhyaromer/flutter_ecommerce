@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class SearchField extends StatelessWidget {
   final String label;
@@ -25,6 +24,8 @@ class SearchField extends StatelessWidget {
       onChanged: onChanged,
       cursorColor: Colors.black,
       decoration: InputDecoration(
+        isDense: true, // Reduces the overall height by using less space
+        contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
         hintText: label,
         errorStyle: const TextStyle(color: Colors.red),
         errorBorder: OutlineInputBorder(
@@ -35,14 +36,12 @@ class SearchField extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
           borderSide: const BorderSide(color: Colors.red),
         ),
-        hintStyle: const TextStyle(color: Colors.black, fontSize: 18),
-        prefixIcon: Icon(Icons.search, color: Colors.deepPurpleAccent),
+        hintStyle: const TextStyle(color: Colors.black, fontSize: 16),
+        prefixIcon: Icon(Icons.search, color: Colors.deepPurpleAccent, size: 25),
+        prefixIconConstraints: const BoxConstraints(minWidth: 40, maxHeight: 120),
         filled: true,
         fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide.none,
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
       ),
     );
   }

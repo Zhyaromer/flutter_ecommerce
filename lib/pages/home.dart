@@ -84,7 +84,7 @@ class _HomeState extends State<Home> {
           child: Column(
             children: [
               Container(
-                height: 80,
+                height: 55,
                 decoration: BoxDecoration(color: Colors.deepPurpleAccent),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -137,7 +137,45 @@ class _HomeState extends State<Home> {
                       },
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 15),
+
+                    Divider(color: Colors.grey[700], thickness: 1),
+
+                    const SizedBox(height: 10),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Exclusive Offers',
+                          style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 720,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: exclusiveOffers.length,
+                            itemBuilder: (context, index) {
+                              final offer = exclusiveOffers[index];
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 12),
+                                child: SizedBox(
+                                  width: 350,
+                                  child: SectionsCard(mockProduct: offer['products'], title: offer['title']),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    Divider(color: Colors.grey[700], thickness: 1),
+
+                    const SizedBox(height: 10),
 
                     ProductsList(
                       mockData: mockProducts2,
@@ -157,13 +195,11 @@ class _HomeState extends State<Home> {
                       height: 240,
                       width: double.infinity,
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                      child: Center(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Image.network(
-                            'https://www.zilliondesigns.com/blog/wp-content/uploads/Ecommerce-sales-banner.png',
-                            fit: BoxFit.cover,
-                          ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.network(
+                          'https://www.zilliondesigns.com/blog/wp-content/uploads/Ecommerce-sales-banner.png',
+                          fit: BoxFit.fill,
                         ),
                       ),
                     ),
@@ -185,8 +221,8 @@ class _HomeState extends State<Home> {
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: Image.network(
-                                  'https://graphicsfamily.com/wp-content/uploads/edd/2021/07/Professional-E-Commerce-Shoes-Banner-Design.jpg',
-                                  fit: BoxFit.fill,
+                                  'https://i.pinimg.com/736x/1e/3b/c1/1e3bc1357eedac258388c1508d2c00e7.jpg',
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),
@@ -239,7 +275,25 @@ class _HomeState extends State<Home> {
                       ),
                     ),
 
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 20),
+
+                    Divider(color: Colors.grey[700], thickness: 1),
+
+                    const SizedBox(height: 10),
+
+                    ProductsList(
+                      mockData: mockProducts,
+                      title: 'Best Selling',
+                      navigate: () {
+                        // Navigate to see all best selling products
+                      },
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    Divider(color: Colors.grey[700], thickness: 1),
+
+                    const SizedBox(height: 10),
 
                     CarouselSlider(
                       options: CarouselOptions(
@@ -277,6 +331,145 @@ class _HomeState extends State<Home> {
                     Divider(color: Colors.grey[700], thickness: 1),
 
                     const SizedBox(height: 20),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Exclusive Offers',
+                          style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 720,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: exclusiveOffers.length,
+                            itemBuilder: (context, index) {
+                              final offer = exclusiveOffers[index];
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 12),
+                                child: SizedBox(
+                                  width: 350,
+                                  child: SectionsCard(mockProduct: offer['products'], title: offer['title']),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    Divider(color: Colors.grey[700], thickness: 1),
+
+                    const SizedBox(height: 10),
+
+                    Container(
+                      height: 240,
+                      width: double.infinity,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.network(
+                          'https://pixelixe.com/blog/images/250/e-commerce-banner-strategy.jpg',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    SizedBox(
+                      height: 400,
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Container(
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.blueGrey[800],
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Image.network(
+                                  'https://i.pinimg.com/736x/1e/3b/c1/1e3bc1357eedac258388c1508d2c00e7.jpg',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(width: 10),
+
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blueGrey[700],
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: Image.network(
+                                        'https://static.vecteezy.com/system/resources/previews/062/687/510/non_2x/vibrant-square-green-mega-sale-banner-with-floating-abstract-shapes-and-bold-typography-ideal-for-seasonal-sales-ecommerce-promos-and-ad-campaigns-vector.jpg',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                const SizedBox(height: 10),
+
+                                Expanded(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blueGrey[700],
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: Image.network(
+                                        'https://static.vecteezy.com/system/resources/thumbnails/062/687/720/small/minimal-white-background-square-mega-sale-banner-with-floating-3d-platform-ideal-for-product-promotion-modern-ecommerce-and-clean-marketing-layouts-vector.jpg',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    Container(
+                      height: 240,
+                      width: double.infinity,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.network(
+                          'https://i.pinimg.com/736x/e6/e6/4f/e6e64f9ab1e500dc262d789e8579217f.jpg',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    Divider(color: Colors.grey[700], thickness: 1),
+
+                    const SizedBox(height: 10),
 
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
