@@ -1,6 +1,12 @@
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce/components/ui/Card.dart';
 import 'package:flutter_ecommerce/components/ui/mainpage_list.dart';
 import 'package:flutter_ecommerce/components/ui/search_field.dart';
+import 'package:flutter_ecommerce/components/ui/sections_card.dart';
+import 'package:flutter_ecommerce/components/ui/top_brands.dart';
+import 'package:flutter_ecommerce/model/TopBrands.dart';
 import 'package:flutter_ecommerce/model/Products.dart';
 
 class Home extends StatefulWidget {
@@ -27,6 +33,12 @@ class _HomeState extends State<Home> {
   void _search(String query) {
     print('Searching for: $query');
   }
+
+  List<Map<String, dynamic>> exclusiveOffers = [
+    {'title': 'Electronics Deals', 'products': mockProducts3},
+    {'title': 'Fashion Finds', 'products': mockProducts3},
+    {'title': 'Home Essentials', 'products': mockProducts3},
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -137,6 +149,10 @@ class _HomeState extends State<Home> {
 
                     const SizedBox(height: 20),
 
+                    Divider(color: Colors.grey[700], thickness: 1),
+
+                    const SizedBox(height: 20),
+
                     Container(
                       height: 240,
                       width: double.infinity,
@@ -152,9 +168,8 @@ class _HomeState extends State<Home> {
                       ),
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
 
-                    // category in here
                     SizedBox(
                       height: 400,
                       width: double.infinity,
@@ -166,7 +181,7 @@ class _HomeState extends State<Home> {
                               child: Container(
                                 height: double.infinity,
                                 decoration: BoxDecoration(
-                                  color: Colors.blueGrey[800], // Different color so you can see it
+                                  color: Colors.blueGrey[800],
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: Image.network(
@@ -177,8 +192,8 @@ class _HomeState extends State<Home> {
                             ),
                           ),
 
-                          const SizedBox(width: 10), // Horizontal spacer for Row
-                          // RIGHT SIDE: Two stacked boxes
+                          const SizedBox(width: 10),
+
                           Expanded(
                             child: Column(
                               children: [
@@ -223,6 +238,73 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                     ),
+
+                    const SizedBox(height: 40),
+
+                    CarouselSlider(
+                      options: CarouselOptions(
+                        height: 200.0,
+                        autoPlay: true,
+                        enlargeCenterPage: true,
+                        viewportFraction: 0.99,
+                      ),
+                      items:
+                          [
+                            buildBanner('https://i.ytimg.com/vi/f64GdOxJjPE/maxresdefault.jpg'),
+                            buildBanner(
+                              'https://graphicsfamily.com/wp-content/uploads/edd/2022/11/Simple-E-commerce-Banner-Design-scaled.jpg',
+                            ),
+                            buildBanner(
+                              'https://graphicsfamily.com/wp-content/uploads/edd/2023/06/E-commerce-Website-Product-Banner-Design-scaled.jpg',
+                            ),
+                          ].map((i) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(child: i);
+                              },
+                            );
+                          }).toList(),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    Divider(color: Colors.grey[700], thickness: 1),
+
+                    const SizedBox(height: 20),
+
+                    TopBrandsWidget(brandsData: brandList),
+
+                    Divider(color: Colors.grey[700], thickness: 1),
+
+                    const SizedBox(height: 20),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Exclusive Offers',
+                          style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 720,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: exclusiveOffers.length,
+                            itemBuilder: (context, index) {
+                              final offer = exclusiveOffers[index];
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 12),
+                                child: SizedBox(
+                                  width: 350,
+                                  child: SectionsCard(mockProduct: offer['products'], title: offer['title']),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -232,4 +314,11 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+}
+
+Widget buildBanner(String imageUrl) {
+  return ClipRRect(
+    borderRadius: BorderRadius.circular(15),
+    child: Image.network(imageUrl, fit: BoxFit.cover, width: double.infinity),
+  );
 }

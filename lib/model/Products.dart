@@ -15,7 +15,6 @@ class Product {
     required this.reviews,
   });
 
-  // Helper to check if item has a discount
   bool get isDiscount => oldPrice != null && oldPrice! > price;
 }
 
@@ -105,5 +104,38 @@ final List<Product> mockProducts2 = [
     oldPrice: 379.0,
     rating: 5,
     reviews: 5600,
+  ),
+];
+
+final List<Product> mockProducts3 = [
+  Product(
+    name: 'Sony WH-1000XM5 Wireless Noise Canceling Headphones',
+    imageUrl: 'https://images.unsplash.com/photo-1613243555988-441166d4d6fd?q=80&w=500&auto=format&fit=crop',
+    price: 348.0,
+    oldPrice: 399.99,
+    rating: 5,
+    reviews: 2450,
+  ),
+  Product(
+    name: 'Samsung Galaxy Watch 6 Classic',
+    imageUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=500&auto=format&fit=crop',
+    price: 299.0,
+    rating: 4,
+    reviews: 890,
+  ),
+  Product(
+    name: 'Logitech MX Master 3S Wireless Mouse',
+    imageUrl: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=500&auto=format&fit=crop',
+    price: 99.0,
+    oldPrice: 129.0,
+    rating: 5,
+    reviews: 120,
+  ),
+  Product(
+    name: 'Dell UltraSharp 27" 4K Monitor',
+    imageUrl: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=500&auto=format&fit=crop',
+    price: 589.0,
+    rating: 4,
+    reviews: 432,
   ),
 ];

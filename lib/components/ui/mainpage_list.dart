@@ -80,7 +80,7 @@ class ProductsList extends StatelessWidget {
                         width: double.infinity,
                         decoration: BoxDecoration(color: Colors.grey[800], borderRadius: BorderRadius.circular(10)),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
                           child: Image.network(product.imageUrl, fit: BoxFit.cover),
                         ),
                       ),
@@ -96,8 +96,8 @@ class ProductsList extends StatelessWidget {
                             children: [
                               _ratingStars(product.rating, product.reviews),
                               SizedBox(height: 5),
-                              const Text(
-                                'Iphone 17 Pro Max pro ultra with great features',
+                              Text(
+                                product.name,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                                 style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
