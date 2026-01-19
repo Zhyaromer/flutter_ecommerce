@@ -3,11 +3,18 @@ import 'package:flutter_ecommerce/model/Products.dart';
 import 'package:flutter_ecommerce/pages/product_details.dart';
 
 class ProductsList extends StatelessWidget {
-  const ProductsList({super.key, required this.mockData, required this.title, required this.navigate});
+  const ProductsList({
+    super.key,
+    required this.mockData,
+    required this.title,
+    required this.navigate,
+    this.showSeeAll = true,
+  });
 
   final List<Product> mockData;
   final String title;
   final VoidCallback navigate;
+  final bool showSeeAll;
 
   Widget _ratingStars(int averageStar, int totalReviews) {
     return Row(
@@ -44,18 +51,19 @@ class ProductsList extends StatelessWidget {
 
               const Spacer(),
 
-              TextButton(
-                onPressed: navigate,
-                child: Row(
-                  children: const [
-                    Text('See All', style: TextStyle(color: Colors.grey, fontSize: 14)),
+              if (showSeeAll)
+                TextButton(
+                  onPressed: navigate,
+                  child: Row(
+                    children: const [
+                      Text('See All', style: TextStyle(color: Colors.grey, fontSize: 14)),
 
-                    SizedBox(width: 4),
+                      SizedBox(width: 4),
 
-                    Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 14),
-                  ],
+                      Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 14),
+                    ],
+                  ),
                 ),
-              ),
             ],
           ),
 

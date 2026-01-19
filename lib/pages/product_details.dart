@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce/components/ui/mainpage_list.dart';
 import 'package:flutter_ecommerce/model/ProductDetails.dart';
+import 'package:flutter_ecommerce/model/Products.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   const ProductDetailsScreen({super.key, required this.productId});
@@ -549,6 +551,51 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                         ),
                       ],
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    Divider(color: Colors.grey[800], thickness: 1),
+
+                    const SizedBox(height: 20),
+
+                    ProductsList(
+                      mockData: mockProducts,
+                      showSeeAll: false,
+                      title: 'similar products',
+                      navigate: () {
+                        // Navigate
+                      },
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    Divider(color: Colors.grey[800], thickness: 1),
+
+                    const SizedBox(height: 20),
+
+                    ProductsList(
+                      mockData: mockProducts,
+                      showSeeAll: false,
+                      title: 'related categories products',
+                      navigate: () {
+                        // Navigate
+                      },
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    Divider(color: Colors.grey[800], thickness: 1),
+
+                    const SizedBox(height: 20),
+
+                    ProductsList(
+                      mockData: mockProducts,
+                      showSeeAll: false,
+                      title: 'more from this brand',
+                      navigate: () {
+                        // Navigate
+                      },
                     ),
                   ],
                 ),
