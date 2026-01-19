@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/model/Products.dart';
+import 'package:flutter_ecommerce/pages/product_details.dart';
 
 class ProductsList extends StatelessWidget {
   const ProductsList({super.key, required this.mockData, required this.title, required this.navigate});
@@ -71,65 +72,80 @@ class ProductsList extends StatelessWidget {
               itemCount: mockData.length,
               itemBuilder: (context, index) {
                 final product = mockData[index];
-                return Container(
-                  decoration: BoxDecoration(color: Colors.grey[850], borderRadius: BorderRadius.circular(10)),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 175,
-                        width: double.infinity,
-                        decoration: BoxDecoration(color: Colors.grey[800], borderRadius: BorderRadius.circular(10)),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                          child: Image.network(product.imageUrl, fit: BoxFit.cover),
-                        ),
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ProductDetails(productId: product.id);
+                        },
                       ),
-
-                      const SizedBox(height: 5),
-
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _ratingStars(product.rating, product.reviews),
-                              SizedBox(height: 5),
-                              Text(
-                                product.name,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 5),
-                              Row(
-                                children: [
-                                  Text(
-                                    product.isDiscount ? '\$${product.price}' : '\$${product.price}',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  if (product.isDiscount)
-                                    Text(
-                                      '\$${product.oldPrice}',
-                                      style: const TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 14,
-                                        decoration: TextDecoration.lineThrough,
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ],
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(color: Colors.grey[850], borderRadius: BorderRadius.circular(10)),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 175,
+                          width: double.infinity,
+                          decoration: BoxDecoration(color: Colors.grey[800], borderRadius: BorderRadius.circular(10)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                            child: Image.network(product.imageUrl, fit: BoxFit.cover),
                           ),
                         ),
-                      ),
-                    ],
+
+                        const SizedBox(height: 5),
+
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _ratingStars(product.rating, product.reviews),
+                                SizedBox(height: 5),
+                                Text(
+                                  product.name,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    Text(
+                                      product.isDiscount ? '\$${product.price}' : '\$${product.price}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    if (product.isDiscount)
+                                      Text(
+                                        '\$${product.oldPrice}',
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 14,
+                                          decoration: TextDecoration.lineThrough,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
