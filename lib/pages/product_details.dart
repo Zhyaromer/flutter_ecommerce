@@ -14,17 +14,43 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   int _selectedVariantIndex = 0;
+  final TextEditingController _quantityController = TextEditingController(text: '1');
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
     _pageController.dispose();
+    _quantityController.dispose();
     super.dispose();
   }
 
   void _selectVariant(int index) {
     setState(() {
+      _quantityController.text = '1';
       _selectedVariantIndex = index;
     });
+  }
+
+  void _incrementQuantity() {
+    int currentQuantity = int.tryParse(_quantityController.text) ?? 1;
+    setState(() {
+      currentQuantity++;
+      _quantityController.text = currentQuantity.toString();
+    });
+  }
+
+  void _decrementQuantity() {
+    int currentQuantity = int.tryParse(_quantityController.text) ?? 1;
+    if (currentQuantity > 1) {
+      setState(() {
+        currentQuantity--;
+        _quantityController.text = currentQuantity.toString();
+      });
+    }
   }
 
   @override
@@ -240,9 +266,98 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                     const SizedBox(height: 10),
 
-                    Text(
-                      '\$${mockProductDetail.variants[_selectedVariantIndex].price.toStringAsFixed(2)}',
-                      style: TextStyle(color: Colors.grey[400], fontSize: 24, fontWeight: FontWeight.bold),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: [
+                          Text(
+                            '\$${mockProductDetail.variants[_selectedVariantIndex].price.toStringAsFixed(2)}',
+                            style: TextStyle(color: Colors.grey[400], fontSize: 28, fontWeight: FontWeight.bold),
+                          ),
+
+                          const SizedBox(width: 10),
+
+                          if (mockProductDetail.variants[_selectedVariantIndex].oldPrice != null)
+                            Text(
+                              '\$${mockProductDetail.variants[_selectedVariantIndex].oldPrice!.toStringAsFixed(2)}',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 16,
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        mockProductDetail.variants[_selectedVariantIndex].stock > 0 ? 'In Stock' : 'Out of Stock',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: mockProductDetail.variants[_selectedVariantIndex].stock > 0
+                              ? Colors.greenAccent
+                              : Colors.redAccent,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    Row(
+                      children: [
+                        ElevatedButton(
+                          onPressed: _decrementQuantity,
+                          child: const Text(
+                            '-',
+                            style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+
+                        Text(
+                          '  ${_quantityController.text}  ',
+                          style: const TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+
+                        ElevatedButton(
+                          onPressed: () {
+                            int currentQuantity = int.tryParse(_quantityController.text) ?? 1;
+                            if (currentQuantity < mockProductDetail.variants[_selectedVariantIndex].stock) {
+                              _incrementQuantity();
+                            }
+                          },
+                          child: const Text(
+                            '+',
+                            style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: mockProductDetail.variants[_selectedVariantIndex].stock > 0 ? () {} : null,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.deepPurpleAccent,
+                              padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                            ),
+                            child: const Text(
+                              'Add to Cart',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
