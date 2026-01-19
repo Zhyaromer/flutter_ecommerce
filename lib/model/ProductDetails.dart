@@ -2,25 +2,23 @@ import 'package:flutter_ecommerce/model/ProductVariant.dart';
 import 'package:flutter_ecommerce/model/Reviews.dart';
 
 class ProductDetails {
-  final String id;
-  final String name;
-  final String description;
+  final String id; //done
+  final String name; //done
+  final String description; // done
   final List<Review> reviews;
-  final int rating;
-  final String videoUrl;
+  final int rating; //done
 
-  final String storeName;
-  final String storeImageUrl;
+  final String storeName; //done
+  final String storeImageUrl; //done
 
-  final String brand;
-  final String category;
-  final List<String> tags;
+  final String brand; //done
+  final String category; //done
 
-  final List<ProductVariant> variants;
+  final List<ProductVariant> variants; //done
 
-  final Map<String, String> specifications;
-  final List<String> features;
-  final List<String> aboutTheProduct;
+  final Map<String, String> specifications; // done
+  final List<String> features; // done
+  final List<String> aboutTheProduct; // done
 
   final List<String> relatedProducts;
   final List<String> relatedProductsByCategory;
@@ -32,12 +30,10 @@ class ProductDetails {
     required this.description,
     required this.reviews,
     required this.rating,
-    required this.videoUrl,
     required this.storeName,
     required this.storeImageUrl,
     required this.brand,
     required this.category,
-    required this.tags,
     required this.variants,
     required this.specifications,
     required this.features,
@@ -51,14 +47,13 @@ class ProductDetails {
 final mockProductDetail = ProductDetails(
   id: 'p1',
   name: 'Sony WH-1000XM5 Premium Noise Canceling Headphones',
-  description: 'Dive into an immersive audio experience with the Sony WH-1000XM5...',
+  description:
+      'The WH-1000XM5 headphones rewrite the rules for distraction-free listening. The WH1000XM5 has two processors that control 8 microphones for unprecedented noise cancellation and exceptional call quality. With a newly developed driver, DSEE – Extreme and Hires audio support the WH-1000XM5 headphones provide awe-inspiring audio quality.',
   storeName: 'Tech World',
   storeImageUrl: 'https://cdn.freebiesupply.com/logos/large/2x/razer-logo-png-transparent.png',
   rating: 4,
-  videoUrl: 'https://www.youtube.com/watch?v=example',
   brand: 'Sony',
   category: 'Electronics',
-  tags: ['Wireless', 'Bluetooth', 'Audio', 'Premium'],
 
   variants: [
     ProductVariant(

@@ -359,6 +359,197 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ),
                       ],
                     ),
+
+                    const SizedBox(height: 20),
+
+                    Divider(color: Colors.grey[800], thickness: 1),
+
+                    const SizedBox(height: 10),
+
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Product Description',
+                        style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: Text(
+                        mockProductDetail.description,
+                        style: TextStyle(color: Colors.grey[300], fontSize: 16),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    Divider(color: Colors.grey[800], thickness: 1),
+
+                    const SizedBox(height: 10),
+
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'About The Product',
+                        style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    ListView.builder(
+                      itemBuilder: (context, index) {
+                        final feature = mockProductDetail.features[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 16.0, bottom: 6),
+                          child: Row(
+                            children: [
+                              Icon(Icons.circle, color: Colors.deepPurpleAccent, size: 16),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(feature, style: TextStyle(color: Colors.grey[200], fontSize: 16)),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      itemCount: mockProductDetail.features.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Top Highlights',
+                        style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    ListView.builder(
+                      itemBuilder: (context, index) {
+                        final feature = mockProductDetail.aboutTheProduct[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 16.0, bottom: 6),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(Icons.check, color: Colors.green, size: 16, fontWeight: FontWeight.bold),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(feature, style: TextStyle(color: Colors.grey[200], fontSize: 16)),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      itemCount: mockProductDetail.aboutTheProduct.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Specifications',
+                        style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    Column(
+                      children: mockProductDetail.specifications.entries.toList().asMap().entries.map((mapEntry) {
+                        final index = mapEntry.key;
+                        final entry = mapEntry.value;
+                        return Column(
+                          children: [
+                            index != 0
+                                ? Container()
+                                : Divider(color: Colors.grey[800], thickness: 1, indent: 16, endIndent: 16),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 16.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 3,
+                                    child: Text(entry.key, style: TextStyle(color: Colors.grey[400], fontSize: 16)),
+                                  ),
+                                  Expanded(
+                                    flex: 5,
+                                    child: Text(
+                                      entry.value,
+                                      style: TextStyle(
+                                        color: Colors.grey[200],
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Divider(color: Colors.grey[800], thickness: 1, indent: 16, endIndent: 16),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 16.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Text('brand', style: TextStyle(color: Colors.grey[400], fontSize: 16)),
+                              ),
+                              const SizedBox(width: 20),
+                              Expanded(
+                                flex: 5,
+                                child: Text(
+                                  mockProductDetail.brand,
+                                  style: TextStyle(color: Colors.grey[200], fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        Divider(color: Colors.grey[800], thickness: 1, indent: 16, endIndent: 16),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 16.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Text('category', style: TextStyle(color: Colors.grey[400], fontSize: 16)),
+                              ),
+                              const SizedBox(width: 20),
+                              Expanded(
+                                flex: 5,
+                                child: Text(
+                                  mockProductDetail.category,
+                                  style: TextStyle(color: Colors.grey[200], fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
