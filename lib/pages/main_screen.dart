@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/pages/all_Categories.dart';
 import 'package:flutter_ecommerce/pages/home.dart';
+import 'package:flutter_ecommerce/pages/profile.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -16,11 +17,12 @@ class _MainScreenState extends State<MainScreen> {
     const Home(),
     const AllCategories(),
     const Center(
-      child: Text('Orders', style: TextStyle(color: Colors.white)),
+      child: Text('Stores', style: TextStyle(color: Colors.white)),
     ),
     const Center(
-      child: Text('Profile', style: TextStyle(color: Colors.white)),
+      child: Text('Favorite', style: TextStyle(color: Colors.white)),
     ),
+    const Profile(),
   ];
 
   @override
@@ -40,6 +42,7 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Categories'),
           BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Stores'),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorite'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
