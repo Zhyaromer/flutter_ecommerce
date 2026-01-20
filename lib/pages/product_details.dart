@@ -597,6 +597,114 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         // Navigate
                       },
                     ),
+
+                    const SizedBox(height: 30),
+
+                    Divider(color: Colors.grey[800], thickness: 1),
+
+                    const SizedBox(height: 20),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Reviews & Ratings (${mockProductDetail.reviews.length})',
+                          style: TextStyle(color: Colors.grey[200], fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurpleAccent,
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                          ),
+                          child: Text(
+                            'Write a review',
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    SizedBox(
+                      height: 300,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          final review = mockProductDetail.TopReviews()[index];
+                          return Container(
+                            width: 300,
+                            margin: const EdgeInsets.only(right: 12),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF1C1B1F),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: Colors.grey[800] ?? Colors.grey, width: 1),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Colors.deepPurpleAccent,
+                                        child: Text(
+                                          review.userName.isNotEmpty ? review.userName[0] : 'U',
+                                          style: const TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            review.userName,
+                                            style: TextStyle(color: Colors.grey[200], fontWeight: FontWeight.bold),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          _ratingStars(review.rating, 1),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    review.comment,
+                                    style: TextStyle(
+                                      color: Colors.grey[100],
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 10,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        itemCount: mockProductDetail.reviews.length,
+                      ),
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepPurpleAccent,
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                      ),
+                      child: Text(
+                        'See More Reviews',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                    ),
                   ],
                 ),
               ),

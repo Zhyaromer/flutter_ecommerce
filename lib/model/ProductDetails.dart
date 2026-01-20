@@ -24,6 +24,10 @@ class ProductDetails {
   final List<String> relatedProductsByCategory;
   final List<String> relatedProductsByBrand;
 
+  List<Review> TopReviews() {
+    return reviews.take(10).toList();
+  }
+
   ProductDetails({
     required this.id,
     required this.name,
@@ -110,10 +114,65 @@ final mockProductDetail = ProductDetails(
   reviews: [
     Review(
       userName: 'Alex Johnson',
+      comment:
+          'worst product ever! broke after one week of use, very disappointed, would not recommend to anyone, save your money, terrible quality,why did I even buy this, complete waste of money, do not buy!,worst product ever! broke after one week of use, very disappointed, would not recommend to anyone, save your money, terrible quality,why did I even buy this, complete waste of money, do not buy!',
+      rating: 1,
+      date: DateTime.now().subtract(const Duration(days: 2)),
+      id: '2',
+      productId: 'p1',
+      userId: 'u1',
+    ),
+    Review(
+      userName: 'Mary Williams',
+      comment: 'good product but could be better',
+      rating: 3,
+      date: DateTime.now().subtract(const Duration(days: 2)),
+      id: '3',
+      productId: 'p1',
+      userId: 'u1',
+    ),
+    Review(
+      userName: 'Kevin Brown',
+      comment: 'Average quality, expected more for the price.',
+      rating: 4,
+      date: DateTime.now().subtract(const Duration(days: 2)),
+      id: '4',
+      productId: 'p1',
+      userId: 'u1',
+    ),
+    Review(
+      userName: 'Emily Davis',
+      comment: 'Good value for the price.',
+      rating: 2,
+      date: DateTime.now().subtract(const Duration(days: 2)),
+      id: '5',
+      productId: 'p1',
+      userId: 'u1',
+    ),
+    Review(
+      userName: 'Michael Scott',
       comment: 'Best headphones I have ever owned!',
       rating: 5,
       date: DateTime.now().subtract(const Duration(days: 2)),
-      id: '1',
+      id: '6',
+      productId: 'p1',
+      userId: 'u1',
+    ),
+    Review(
+      userName: 'Pam Beesly',
+      comment: 'Good value for the price.',
+      rating: 4,
+      date: DateTime.now().subtract(const Duration(days: 2)),
+      id: '7',
+      productId: 'p1',
+      userId: 'u1',
+    ),
+    Review(
+      userName: 'Jim Halpert',
+      comment: 'one of the best purchases I have made recently!',
+      rating: 5,
+      date: DateTime.now().subtract(const Duration(days: 2)),
+      id: '8',
       productId: 'p1',
       userId: 'u1',
     ),

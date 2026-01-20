@@ -4,7 +4,7 @@ class Review {
   final String userId;
   final String userName;
   final String comment;
-  final double rating;
+  final int rating;
   final DateTime date;
 
   Review({
