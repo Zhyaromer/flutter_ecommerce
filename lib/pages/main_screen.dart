@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/pages/all_Categories.dart';
+import 'package:flutter_ecommerce/pages/all_stores.dart';
 import 'package:flutter_ecommerce/pages/home.dart';
 import 'package:flutter_ecommerce/pages/profile.dart';
 
@@ -16,9 +17,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     const Home(),
     const AllCategories(),
-    const Center(
-      child: Text('Stores', style: TextStyle(color: Colors.white)),
-    ),
+    AllStores(),
     const Center(
       child: Text('Favorite', style: TextStyle(color: Colors.white)),
     ),

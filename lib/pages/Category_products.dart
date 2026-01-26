@@ -53,7 +53,6 @@ class _CategoryProductsState extends State<CategoryProducts> {
       final suggestions = results.take(5).map((product) => product.name).toList();
 
       setState(() {
-        print(widget.category);
         _searchResults = results;
         isEmpty = results.isEmpty;
         isLoading = false;
