@@ -1,11 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/components/ui/mainpage_list.dart';
-import 'package:flutter_ecommerce/components/ui/search_field.dart';
 import 'package:flutter_ecommerce/components/ui/sections_card.dart';
 import 'package:flutter_ecommerce/components/ui/top_brands.dart';
 import 'package:flutter_ecommerce/model/TopBrands.dart';
 import 'package:flutter_ecommerce/model/Products.dart';
+import 'package:flutter_ecommerce/pages/Search.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -15,13 +15,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final TextEditingController _searchController = TextEditingController();
-
-  void _search(String query) {
-    // ignore: avoid_print
-    print('Searching for: $query');
-  }
-
   List<Map<String, dynamic>> exclusiveOffers = [
     {'title': 'Electronics Deals', 'products': mockProducts3},
     {'title': 'Fashion Finds', 'products': mockProducts3},
@@ -30,7 +23,6 @@ class _HomeState extends State<Home> {
 
   @override
   void dispose() {
-    _searchController.dispose();
     super.dispose();
   }
 
@@ -90,18 +82,29 @@ class _HomeState extends State<Home> {
                   child: Column(
                     children: [
                       const SizedBox(height: 5),
-                      SearchField(
-                        label: 'Search for products',
-                        controller: _searchController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a search term';
-                          }
-                          return null;
+
+                      TextField(
+                        readOnly: true,
+                        keyboardType: TextInputType.text,
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const Search()));
                         },
-                        onChanged: (value) {
-                          _search(value);
-                        },
+                        style: const TextStyle(color: Colors.black),
+                        cursorColor: Colors.black,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                          hintText: 'Search for products',
+                          hintStyle: const TextStyle(color: Colors.black, fontSize: 16),
+                          prefixIcon: Icon(Icons.search, color: Colors.deepPurpleAccent, size: 25),
+                          prefixIconConstraints: const BoxConstraints(minWidth: 40, maxHeight: 120),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
                       ),
                     ],
                   ),
