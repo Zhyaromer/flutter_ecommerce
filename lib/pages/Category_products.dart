@@ -5,14 +5,16 @@ import 'package:flutter_ecommerce/components/ui/search_field.dart';
 import 'package:flutter_ecommerce/model/SearchProducts.dart';
 import 'package:flutter_ecommerce/pages/product_details.dart';
 
-class Search extends StatefulWidget {
-  const Search({super.key});
+class CategoryProducts extends StatefulWidget {
+  final String category;
+
+  const CategoryProducts({super.key, required this.category});
 
   @override
-  State<Search> createState() => _SearchState();
+  State<CategoryProducts> createState() => _CategoryProductsState();
 }
 
-class _SearchState extends State<Search> {
+class _CategoryProductsState extends State<CategoryProducts> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
   List<Searchproducts> _searchResults = [];
@@ -34,7 +36,6 @@ class _SearchState extends State<Search> {
 
       if (query.isEmpty) {
         setState(() {
-          _searchResults = [];
           isEmpty = true;
           isLoading = false;
           showSuggestions = true;
@@ -52,6 +53,7 @@ class _SearchState extends State<Search> {
       final suggestions = results.take(5).map((product) => product.name).toList();
 
       setState(() {
+        print(widget.category);
         _searchResults = results;
         isEmpty = results.isEmpty;
         isLoading = false;
@@ -62,19 +64,20 @@ class _SearchState extends State<Search> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _searchResults = searchdummyProducts;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _searchFocusNode.requestFocus();
+    });
+  }
+
+  @override
   void dispose() {
     _searchController.dispose();
     _searchFocusNode.dispose();
     _debounce?.cancel();
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      FocusScope.of(context).requestFocus(_searchFocusNode);
-    });
   }
 
   @override
@@ -132,16 +135,8 @@ class _SearchState extends State<Search> {
             ),
           ),
 
-          _searchController.text.isEmpty
-              ? Expanded(
-                  child: Center(
-                    child: SizedBox(height: 300, child: Image(image: AssetImage('assets/images/Search-rafiki.png'))),
-                  ),
-                )
-              : SizedBox.shrink(),
-
           if (isLoading)
-            Expanded(child: Center(child: CircularProgressIndicator()))
+            const Expanded(child: Center(child: CircularProgressIndicator()))
           else if (showSuggestions && _searchController.text.isNotEmpty)
             Expanded(
               child: ListView.builder(
@@ -153,23 +148,20 @@ class _SearchState extends State<Search> {
                     title: Text(text, style: const TextStyle(color: Colors.white)),
                     onTap: () {
                       _searchController.text = text;
-                      isLoading = true;
                       _onSearchChanged(text, triggerSuggestions: false);
-                      setState(() {
-                        showSuggestions = false;
-                      });
+                      FocusScope.of(context).unfocus();
                     },
                   );
                 },
               ),
             )
           else if (isEmpty && _searchController.text.isNotEmpty)
-            Expanded(
+            const Expanded(
               child: Center(
                 child: Text('No products found.', style: TextStyle(fontSize: 18, color: Colors.white54)),
               ),
             )
-          else if (_searchController.text.isNotEmpty)
+          else
             Expanded(child: _buildCards(_searchResults)),
         ],
       ),

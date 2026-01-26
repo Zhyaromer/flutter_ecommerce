@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/model/Categories.dart';
+import 'package:flutter_ecommerce/pages/Category_products.dart';
 
 class AllCategories extends StatelessWidget {
   const AllCategories({super.key});
@@ -45,7 +46,14 @@ class AllCategories extends StatelessWidget {
                     final category = categoryList[index];
                     return InkWell(
                       onTap: () {
-                        // Handle category tap
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return CategoryProducts(category: category.name);
+                            },
+                          ),
+                        );
                       },
                       child: Container(
                         decoration: BoxDecoration(

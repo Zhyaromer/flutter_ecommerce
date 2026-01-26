@@ -6,6 +6,7 @@ class SearchField extends StatelessWidget {
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
+  final FocusNode searchFocusNode;
 
   const SearchField({
     super.key,
@@ -14,6 +15,7 @@ class SearchField extends StatelessWidget {
     required this.validator,
     required this.onChanged,
     required this.onSubmitted,
+    required this.searchFocusNode,
   });
 
   @override
@@ -24,6 +26,7 @@ class SearchField extends StatelessWidget {
       style: const TextStyle(color: Colors.black),
       validator: validator,
       onChanged: onChanged,
+      focusNode: searchFocusNode,
       onFieldSubmitted: onSubmitted,
       cursorColor: Colors.black,
       decoration: InputDecoration(
