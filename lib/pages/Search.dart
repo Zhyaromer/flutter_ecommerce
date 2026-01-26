@@ -16,11 +16,13 @@ class _SearchState extends State<Search> {
   final TextEditingController _searchController = TextEditingController();
   int stock = 1;
   List<Searchproducts> _searchResults = [];
+  List<String> _suggestions = [];
   Timer? _debounce;
   bool isLoading = false;
   bool isEmpty = false;
+  bool showSuggestions = true;
 
-  void _onSearchChanged(String query) {
+  void _onSearchChanged(String query, {bool triggerSuggestions = true}) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
     _debounce = Timer(const Duration(milliseconds: 400), () {
@@ -35,21 +37,26 @@ class _SearchState extends State<Search> {
           _searchResults = [];
           isEmpty = true;
           isLoading = false;
+          showSuggestions = true;
+          _suggestions = [];
         });
         return;
       }
 
       final searchLower = query.toLowerCase();
-
       final results = searchdummyProducts.where((product) {
         return product.name.toLowerCase().contains(searchLower) ||
             product.description.toLowerCase().contains(searchLower);
       }).toList();
 
+      final suggestions = results.take(5).map((product) => product.name).toList();
+
       setState(() {
         _searchResults = results;
         isEmpty = results.isEmpty;
         isLoading = false;
+        _suggestions = suggestions;
+        showSuggestions = triggerSuggestions;
       });
     });
   }
@@ -106,7 +113,10 @@ class _SearchState extends State<Search> {
                             return null;
                           },
                           onChanged: (value) {
-                            _onSearchChanged(value);
+                            _onSearchChanged(value, triggerSuggestions: true);
+                          },
+                          onSubmitted: (value) {
+                            _onSearchChanged(value, triggerSuggestions: false);
                           },
                         ),
                       ),
@@ -127,6 +137,27 @@ class _SearchState extends State<Search> {
 
           if (isLoading)
             Expanded(child: Center(child: CircularProgressIndicator()))
+          else if (showSuggestions && _searchController.text.isNotEmpty)
+            Expanded(
+              child: ListView.builder(
+                itemCount: _suggestions.length,
+                itemBuilder: (context, index) {
+                  final text = _suggestions[index];
+                  return ListTile(
+                    leading: const Icon(Icons.search, color: Colors.white54),
+                    title: Text(text, style: const TextStyle(color: Colors.white)),
+                    onTap: () {
+                      _searchController.text = text;
+                      isLoading = true;
+                      _onSearchChanged(text, triggerSuggestions: false);
+                      setState(() {
+                        showSuggestions = false;
+                      });
+                    },
+                  );
+                },
+              ),
+            )
           else if (isEmpty && _searchController.text.isNotEmpty)
             Expanded(
               child: Center(

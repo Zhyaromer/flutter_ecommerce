@@ -5,6 +5,7 @@ class SearchField extends StatelessWidget {
   final TextEditingController controller;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
+  final void Function(String)? onSubmitted;
 
   const SearchField({
     super.key,
@@ -12,6 +13,7 @@ class SearchField extends StatelessWidget {
     required this.controller,
     required this.validator,
     required this.onChanged,
+    required this.onSubmitted,
   });
 
   @override
@@ -22,6 +24,7 @@ class SearchField extends StatelessWidget {
       style: const TextStyle(color: Colors.black),
       validator: validator,
       onChanged: onChanged,
+      onFieldSubmitted: onSubmitted,
       cursorColor: Colors.black,
       decoration: InputDecoration(
         isDense: true, // Reduces the overall height by using less space
