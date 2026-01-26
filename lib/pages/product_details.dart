@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/components/ui/mainpage_list.dart';
 import 'package:flutter_ecommerce/model/ProductDetails.dart';
 import 'package:flutter_ecommerce/model/Products.dart';
+import 'package:flutter_ecommerce/model/Reviews.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   const ProductDetailsScreen({super.key, required this.productId});
@@ -621,7 +622,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                           child: Text(
                             'Write a review',
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
                           ),
                         ),
                       ],
@@ -665,7 +666,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             style: TextStyle(color: Colors.grey[200], fontWeight: FontWeight.bold),
                                           ),
                                           const SizedBox(height: 4),
-                                          _ratingStars(review.rating, 1),
+                                          _ratingStars(review.rating, 0),
                                         ],
                                       ),
                                     ],
@@ -687,14 +688,54 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                           );
                         },
-                        itemCount: mockProductDetail.reviews.length,
+                        itemCount: mockProductDetail.TopReviews().length,
                       ),
                     ),
 
                     const SizedBox(height: 30),
 
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          backgroundColor: const Color(0xFF121212),
+                          isScrollControlled: true,
+                          isDismissible: true,
+                          enableDrag: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                          ),
+                          builder: (context) {
+                            final screenHeight = MediaQuery.of(context).size.height;
+
+                            return SizedBox(
+                              height: screenHeight * 0.9,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(vertical: 12),
+                                    width: 40,
+                                    height: 4,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[700],
+                                      borderRadius: BorderRadius.circular(2),
+                                    ),
+                                  ),
+
+                                  Expanded(
+                                    child: SingleChildScrollView(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                                        child: _seeAllReviews(mockProductDetail.reviews),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.deepPurpleAccent,
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
@@ -765,7 +806,50 @@ Widget _ratingStars(int averageStar, int totalReviews) {
         return Icon(index < averageStar ? Icons.star : Icons.star_border, color: Colors.amber, size: 16);
       }),
       const SizedBox(width: 5),
-      Text('($totalReviews)', style: const TextStyle(color: Colors.grey, fontSize: 12)),
+      totalReviews > 0
+          ? Text('($totalReviews)', style: const TextStyle(color: Colors.grey, fontSize: 12))
+          : const SizedBox.shrink(),
     ],
+  );
+}
+
+Widget _seeAllReviews(List<Review> reviews) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 12),
+    child: Column(
+      children: reviews.map((review) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                backgroundColor: Colors.deepPurpleAccent,
+                child: Text(
+                  review.userName.isNotEmpty ? review.userName[0] : 'U',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      review.userName,
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 4),
+                    _ratingStars(review.rating, 0),
+                    const SizedBox(height: 6),
+                    Text(review.comment, style: const TextStyle(color: Colors.grey, fontSize: 14)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+    ),
   );
 }
