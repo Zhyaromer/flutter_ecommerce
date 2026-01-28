@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/pages/all_Categories.dart';
 import 'package:flutter_ecommerce/pages/all_stores.dart';
+import 'package:flutter_ecommerce/pages/favorite.dart';
 import 'package:flutter_ecommerce/pages/home.dart';
 import 'package:flutter_ecommerce/pages/profile.dart';
 
@@ -17,10 +18,8 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     const Home(),
     const AllCategories(),
-    AllStores(),
-    const Center(
-      child: Text('Favorite', style: TextStyle(color: Colors.white)),
-    ),
+    const AllStores(),
+    const Favorite(),
     const Profile(),
   ];
 
@@ -41,7 +40,7 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Categories'),
           BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Stores'),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorite'),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorites'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
