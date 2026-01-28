@@ -31,9 +31,18 @@ List<Stores> storeDataset = [
     imageUrl: "https://images.unsplash.com/photo-1531297484001-80022131f5a1",
     description: "Your one-stop shop for the latest gadgets and high-end electronics.",
     rating: 4.8,
-    contact: [Contacts(id: 1, name: "Support", phoneNumber: "+1234567890")],
-    location: [Locations(id: 1, name: "Main Branch", address: "123 Silicon Valley, CA")],
-    socials: [Socials(id: 1, name: "Instagram", url: "instagram.com/technova")],
+    contact: [
+      Contacts(id: 1, name: "Support", phoneNumber: "+1234567890"),
+      Contacts(id: 2, name: "Sales", phoneNumber: "+1098765432"),
+    ],
+    location: [
+      Locations(id: 1, name: "Main Branch", address: "123 Silicon Valley, CA"),
+      Locations(id: 2, name: "Main Branch", address: "456 Tech Park, CA"),
+    ],
+    socials: [
+      Socials(id: 1, name: "Instagram", url: "instagram.com/technova"),
+      Socials(id: 2, name: "Facebook", url: "facebook.com/technova"),
+    ],
   ),
   Stores(
     id: "s2",

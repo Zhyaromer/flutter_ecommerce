@@ -6,7 +6,12 @@ class SearchField extends StatelessWidget {
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
-  final FocusNode searchFocusNode;
+  final FocusNode? searchFocusNode;
+  final Color filedColor;
+  final Color cursorColor;
+  final Color iconColor;
+  final Color hintColor;
+  final double circularBorderRadius;
 
   const SearchField({
     super.key,
@@ -14,8 +19,13 @@ class SearchField extends StatelessWidget {
     required this.controller,
     required this.validator,
     required this.onChanged,
-    required this.onSubmitted,
-    required this.searchFocusNode,
+    this.onSubmitted,
+    this.searchFocusNode,
+    this.filedColor = Colors.white,
+    this.cursorColor = Colors.black,
+    this.iconColor = Colors.deepPurpleAccent,
+    this.hintColor = Colors.black,
+    this.circularBorderRadius = 30.0,
   });
 
   @override
@@ -23,31 +33,34 @@ class SearchField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       keyboardType: TextInputType.text,
-      style: const TextStyle(color: Colors.black),
+      style: TextStyle(color: cursorColor),
       validator: validator,
       onChanged: onChanged,
       focusNode: searchFocusNode,
       onFieldSubmitted: onSubmitted,
-      cursorColor: Colors.black,
+      cursorColor: cursorColor,
       decoration: InputDecoration(
-        isDense: true, // Reduces the overall height by using less space
-        contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        isDense: true,
+        contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         hintText: label,
         errorStyle: const TextStyle(color: Colors.red),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(circularBorderRadius),
           borderSide: const BorderSide(color: Colors.red),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(circularBorderRadius),
           borderSide: const BorderSide(color: Colors.red),
         ),
-        hintStyle: const TextStyle(color: Colors.black, fontSize: 16),
-        prefixIcon: Icon(Icons.search, color: Colors.deepPurpleAccent, size: 25),
+        hintStyle: TextStyle(color: hintColor, fontSize: 16),
+        prefixIcon: Icon(Icons.search, color: iconColor, size: 25),
         prefixIconConstraints: const BoxConstraints(minWidth: 40, maxHeight: 120),
         filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
+        fillColor: filedColor,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(circularBorderRadius),
+          borderSide: BorderSide.none,
+        ),
       ),
     );
   }

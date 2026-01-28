@@ -154,12 +154,12 @@ class _AllStoresState extends State<AllStores> {
                                   borderRadius: BorderRadius.circular(8),
                                   child: Image.network(
                                     store.imageUrl,
-                                    width: 100,
-                                    height: 150,
-                                    fit: BoxFit.cover,
+                                    width: 150,
+                                    height: 120,
+                                    fit: BoxFit.fill,
                                     errorBuilder: (context, error, stackTrace) => Container(
-                                      width: 100,
-                                      height: 150,
+                                      width: 150,
+                                      height: 120,
                                       color: Colors.grey[300],
                                       child: Icon(Icons.store),
                                     ),
