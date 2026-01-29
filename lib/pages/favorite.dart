@@ -62,7 +62,7 @@ class _FavoriteState extends State<Favorite> {
                         },
                         child: Container(
                           height: 125,
-                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                           decoration: BoxDecoration(
                             color: const Color(0xFF1E1E1E),
                             borderRadius: BorderRadius.circular(12),

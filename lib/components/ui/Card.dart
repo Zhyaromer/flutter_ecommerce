@@ -49,7 +49,7 @@ class ProductCard extends StatelessWidget {
               );
             },
             child: Container(
-              decoration: BoxDecoration(color: Colors.grey[850], borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(color: Color(0xFF1E1E1E), borderRadius: BorderRadius.circular(10)),
               child: Column(
                 children: [
                   Container(
