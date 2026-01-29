@@ -2,23 +2,23 @@ import 'package:flutter_ecommerce/model/ProductVariant.dart';
 import 'package:flutter_ecommerce/model/Reviews.dart';
 
 class ProductDetails {
-  final String id; //done
-  final String name; //done
-  final String description; // done
+  final String id;
+  final String name;
+  final String description;
   final List<Review> reviews;
-  final int rating; //done
+  final int rating;
 
-  final String storeName; //done
-  final String storeImageUrl; //done
+  final String storeName;
+  final String storeImageUrl;
 
-  final String brand; //done
-  final String category; //done
+  final String brand;
+  final String category;
 
-  final List<ProductVariant> variants; //done
+  final List<ProductVariant> variants;
 
-  final Map<String, String> specifications; // done
-  final List<String> features; // done
-  final List<String> aboutTheProduct; // done
+  final Map<String, String> specifications;
+  final List<String> features;
+  final List<String> aboutTheProduct;
 
   final List<String> relatedProducts;
   final List<String> relatedProductsByCategory;
