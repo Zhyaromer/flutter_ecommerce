@@ -6,6 +6,7 @@ import 'package:flutter_ecommerce/components/ui/top_brands.dart';
 import 'package:flutter_ecommerce/model/TopBrands.dart';
 import 'package:flutter_ecommerce/model/Products.dart';
 import 'package:flutter_ecommerce/pages/Search.dart';
+import 'package:flutter_ecommerce/pages/cart.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -47,9 +48,9 @@ class _HomeState extends State<Home> {
           Stack(
             children: [
               IconButton(
-                icon: const Icon(Icons.shopping_cart_rounded, color: Colors.white, size: 28),
+                icon: const Icon(Icons.shopping_cart_rounded, color: Colors.white, size: 22),
                 onPressed: () {
-                  // Navigate to cart page
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const Cart()));
                 },
               ),
               Positioned(
@@ -61,7 +62,7 @@ class _HomeState extends State<Home> {
                   constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
                   child: const Text(
                     '3',
-                    style: TextStyle(color: Colors.white, fontSize: 10),
+                    style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                 ),
