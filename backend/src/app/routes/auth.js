@@ -10,7 +10,7 @@ router.post('/signup', signup);
 // Login route
 router.post('/login', login);
 
-router.get('/test', auth, (req, res) => {
+router.get('/test', auth(['vendor']), (req, res) => {
     res.json({ message: 'Auth route is working' });
 });
 
