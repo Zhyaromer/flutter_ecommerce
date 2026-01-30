@@ -1,5 +1,6 @@
 // middleware/auth.js
 const jwt = require('jsonwebtoken');
+const redis = require("../../config/redis");
 require('dotenv').config();
 
 const auth = (allowedRoles = []) => {
@@ -7,8 +8,14 @@ const auth = (allowedRoles = []) => {
         allowedRoles = [allowedRoles];
     }
 
-    return (req, res, next) => {
+    return async (req, res, next) => {
         const authHeader = req.headers.authorization;
+
+        const blacklisted = await redis.get(authHeader?.split(' ')[1]);
+
+        if (blacklisted) {
+            return res.status(401).json({ error: 'Token is invalidated' });
+        }
 
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return res.status(401).json({ error: 'No token provided' });

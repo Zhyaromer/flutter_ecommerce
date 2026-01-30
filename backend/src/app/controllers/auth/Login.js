@@ -25,7 +25,9 @@ const login = async (req, res) => {
             FROM users u
             LEFT JOIN user_roles ur ON u.userid = ur.userid
             WHERE u.email = $1
-        `, [email]);
+        `, [email.trim().toLowerCase()]);
+
+        console.log(result.rows);
 
         if (result.rows.length === 0) {
             return res.status(400).json({ error: 'Invalid credentials' });
