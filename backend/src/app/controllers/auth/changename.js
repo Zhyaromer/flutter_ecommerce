@@ -1,57 +1,46 @@
 const db = require('../../config/database');
-const jwt = require('jsonwebtoken');
-const redis = require("../../config/redis");
 
 const changeName = async (req, res) => {
     const { newUsername } = req.body;
-    const cleanUsername = newUsername?.trim();
+    const cleanUsername = newUsername?.trim().toLowerCase();
 
     if (!cleanUsername || cleanUsername.length < 3 || cleanUsername.length > 20) {
         return res.status(400).json({ message: 'Username must be between 3 and 20 characters' });
     }
 
-    if (cleanUsername === req.user.username) {
-        return res.status(400).json({ message: 'This is already your current username' });
+    const usernameRegex = /^[a-zA-Z0-9_-]+$/;
+    if (!usernameRegex.test(cleanUsername)) {
+        return res.status(400).json({ message: 'Username contains invalid characters. Only letters, numbers, _ and - are allowed.' });
     }
 
     try {
-        const result = await db.query(
-            'UPDATE users SET username = $1 WHERE userid = $2 RETURNING userid, username',
-            [cleanUsername, req.user.userid]
+        const userResult = await db.query(
+            'SELECT last_username_change FROM users WHERE userid = $1',
+            [req.user.userid]
         );
 
-        if (result.rows.length === 0) {
+        if (userResult.rows.length === 0) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const user = result.rows[0];
-        const oldToken = req.headers.authorization.split(' ')[1];
-        const now = Math.floor(Date.now() / 1000);
-        const timeLeft = req.user.exp - now;
+        const lastChange = userResult.rows[0].last_username_change;
 
-        const expiry = timeLeft > 0 ? timeLeft : 1;
+        const now = new Date();
+        const cooldown = 14 * 24 * 60 * 60 * 1000;
 
-        const newToken = jwt.sign(
-            {
-                userid: user.userid,
-                username: user.username,
-                role: req.user.role
-            },
-            process.env.SECRET_KEY,
-            { expiresIn: expiry }
+        if (lastChange && now - new Date(lastChange) < cooldown) {
+            return res.status(400).json({ message: 'You can only change your username once every 14 days' });
+        }
+
+        const result = await db.query(
+            'UPDATE users SET username = $1, last_username_change = NOW() WHERE userid = $2 RETURNING userid, username',
+            [cleanUsername, req.user.userid]
         );
 
-        try {
-            if (timeLeft > 0) {
-                await redis.set(oldToken, 'invalidated', 'EX', expiry);
-            }
-        } catch (redisError) {
-            console.error('Redis Blacklist Failed (non-critical):', redisError.message);
-        }
+        const user = result.rows[0];
 
         return res.status(200).json({
             message: 'Username updated!',
-            token: newToken,
             username: user.username
         });
 
