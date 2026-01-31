@@ -1,8 +1,5 @@
 const bcrypt = require('bcrypt');
 const db = require('../../config/database');
-const redis = require('../../config/redis');
-const { createAccessToken, createRefreshToken } = require('../../utils/tokens');
-require('dotenv').config();
 
 const vendorSignup = async (req, res) => {
     const { username, email, password, description, cover_image, avatar_image, location, phoneNumber, vendor_social, vendor_categoryid } = req.body;
@@ -11,8 +8,14 @@ const vendorSignup = async (req, res) => {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    if (!location || !location.city || !location.address || !Array.isArray(location)) {
-        return res.status(400).json({ error: "Location, city, and address are required." });
+    if (!Array.isArray(location) || location.length === 0) {
+        return res.status(400).json({ error: "Location must be a non-empty array" });
+    }
+
+    for (const loc of location) {
+        if (!loc.city || !loc.address) {
+            return res.status(400).json({ error: "Each location must have city and address" });
+        }
     }
 
     if (!/\S+@\S+\.\S+/.test(email)) {
@@ -31,16 +34,26 @@ const vendorSignup = async (req, res) => {
         return res.status(400).json({ error: 'Password should not contain the email local part' });
     }
 
-    if (!/^\d{10}$/.test(phoneNumber)) {
-        return res.status(400).json({ error: 'Invalid phone number format' });
+    if (!Array.isArray(phoneNumber) || phoneNumber.length === 0) {
+        return res.status(400).json({ error: "phoneNumber must be an array" });
+    }
+
+    for (const phone of phoneNumber) {
+        if (!/^(0?7[3-9]\d{8})$/.test(phone)) {
+            return res.status(400).json({ error: "Invalid Iraqi phone number format" });
+        }
+    }
+
+    if (phoneNumber.length > 3) {
+        return res.status(400).json({ error: 'A maximum of 3 phone numbers are allowed' });
     }
 
     if (username.length > 60 || username.length <= 5) {
         return res.status(400).json({ error: 'Username must be between 6 and 60 characters' });
     }
 
-    if (description.length > 100 || description.length <= 10) {
-        return res.status(400).json({ error: 'Description must be between 10 and 100 characters' });
+    if (description.length > 200 || description.length <= 10) {
+        return res.status(400).json({ error: 'Description must be between 10 and 200 characters' });
     }
 
     const client = await db.connect();
@@ -48,21 +61,11 @@ const vendorSignup = async (req, res) => {
     try {
         await client.query('BEGIN');
 
-        await client.query(
-            'SELECT email , username FROM users WHERE email = $1',
-            [email.trim().toLowerCase(), username.trim().toLowerCase()]
-        );
-
-        await client.query(
-            'SELECT email , username FROM vendor WHERE email = $1',
-            [email.trim().toLowerCase(), username.trim().toLowerCase()]
-        );
-
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password.trim(), salt);
 
-        const insertVendorQuery = 'insert into vendor (username, email, password, description, cover_image, avatar_image, category) values ($1, $2, $3, $4, $5, $6, $7) RETURNING id, username, email';
-        const categoryResult = await client.query('SELECT categoryid FROM categories WHERE name = $1', [vendor_categoryid.trim()]);
+        const insertVendorQuery = 'insert into vendor (username, email, password, description, cover_image, avatar_image, vendor_categoryid) values ($1, $2, $3, $4, $5, $6, $7) RETURNING vendorid, username, email';
+        const categoryResult = await client.query('SELECT vendor_categoryid FROM vendor_category WHERE vendor_categoryid = $1', [vendor_categoryid]);
 
         if (categoryResult.rowCount === 0) {
             await client.query('ROLLBACK');
@@ -88,35 +91,34 @@ const vendorSignup = async (req, res) => {
             return res.status(500).json({ error: 'Failed to create vendor' });
         }
 
-        const insertVendorLocation = 'INSERT INTO vendor_location (vendor_id, location) VALUES ($1, $2)';
+        const insertVendorLocation = 'INSERT INTO vendor_location (vendorid, city, address) VALUES ($1, $2, $3)';
 
         for (const loc of location) {
             const { city, address } = loc;
-            const locResult = await client.query(insertVendorLocation, [vendor.id, { city, address }]);
-
+            const locResult = await client.query(insertVendorLocation, [vendor.vendorid, city, address]);
             if (locResult.rowCount === 0) {
                 await client.query('ROLLBACK');
                 return res.status(500).json({ error: 'Failed to add vendor location' });
             }
         }
 
-        const insertVendorContact = 'INSERT INTO vendor_contact (vendor_id, phone_number) VALUES ($1, $2)';
+        const insertVendorContact = 'INSERT INTO vendor_contact (vendorid, phonenumber) VALUES ($1, $2)';
 
         for (const phone of phoneNumber) {
-            const contactResult = await client.query(insertVendorContact, [vendor.id, phone]);
+            const contactResult = await client.query(insertVendorContact, [vendor.vendorid, phone]);
             if (contactResult.rowCount === 0) {
                 await client.query('ROLLBACK');
                 return res.status(500).json({ error: 'Failed to add vendor contact' });
             }
         }
 
-        if (vendor_social && typeof vendor_social === 'object') {
-            const insertVendorSocial = 'INSERT INTO vendor_social (vendor_id, name, social_link) VALUES ($1, $2, $3)';
+        if (Array.isArray(vendor_social)) {
+            const insertVendorSocial = 'INSERT INTO vendor_social (vendorid, name, url) VALUES ($1, $2, $3)';
 
-            for (const social in vendor_social) {
-                const { name, social_link } = social;
+            for (const social of vendor_social) {
+                const { name, url } = social;
 
-                const socialResult = await client.query(insertVendorSocial, [vendor.id, name, social_link]);
+                const socialResult = await client.query(insertVendorSocial, [vendor.vendorid, name, url]);
 
                 if (socialResult.rowCount === 0) {
                     await client.query('ROLLBACK');
@@ -125,15 +127,26 @@ const vendorSignup = async (req, res) => {
             }
         }
 
+        const insertBalanceQuery = 'INSERT INTO vendor_accounts (vendorid, balance) VALUES ($1, $2)';
+
+        const balanceResult = await client.query(insertBalanceQuery, [vendor.vendorid, 0]);
+
+        if (balanceResult.rowCount === 0) {
+            await client.query('ROLLBACK');
+            return res.status(500).json({ error: 'Failed to create vendor account balance' });
+        }
+
         await client.query('COMMIT');
         res.status(201).json({ message: 'Vendor created successfully', vendor });
     } catch (error) {
-        console.log(error);
-        if (error.code === '23505') {
-            return res.status(400).json({ message: 'Username or email is already taken' });
+        if (error.code === '23505' && error.detail.includes('username')) {
+            return res.status(400).json({ message: 'Username is already taken' });
+        } else if (error.code === '23505' && error.detail.includes('email')) {
+            return res.status(400).json({ message: 'Email is already registered' });
         }
-        console.error('Error during vendor signup:', error);
         res.status(500).json({ error: 'Internal server error' });
+    } finally {
+        client.release();
     }
 };
 

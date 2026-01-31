@@ -4,6 +4,7 @@ const PORT = 3000;
 const path = require('path');
 const cors = require('cors');
 const authRoutes = require('./src/app/routes/auth');
+const vendorRoutes = require('./src/app/routes/vendor');
 
 app.use(cors({
     origin: '*',
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use('/auth', authRoutes);
+app.use('/vendor', vendorRoutes);
 
 //test route
 app.get('/', (req, res) => {
