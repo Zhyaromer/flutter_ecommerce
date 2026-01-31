@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ecommerce/pages/main_screen.dart';
+import 'package:flutter_ecommerce/pages/welcome_page.dart';
 
 void main() {
   runApp(Main());
@@ -16,7 +16,7 @@ class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MainScreen(),
+      home: WelcomePage(),
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
