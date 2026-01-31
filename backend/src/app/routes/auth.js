@@ -4,6 +4,14 @@ const signup = require('../controllers/auth/signup');
 const login = require('../controllers/auth/Login');
 const auth = require('../middleware/auth/auth');
 const logout = require('../controllers/auth/logout');
+const changeName = require('../controllers/auth/changename');
+const refresh = require('../controllers/auth/refresh');
+
+// Refresh token route
+router.post('/refresh', refresh);
+
+// Change name route
+router.post('/changename', auth(), changeName);
 
 // Logout route
 router.post('/logout', auth(), logout);

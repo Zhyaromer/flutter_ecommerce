@@ -1,19 +1,20 @@
 // controllers/authController.js
 const bcrypt = require('bcrypt');
 const db = require('../../config/database');
-const jwt = require('jsonwebtoken');
+const redis = require('../../config/redis');
+const { createAccessToken, createRefreshToken } = require('../../utils/tokens');
 require('dotenv').config();
 
 const signup = async (req, res) => {
     const { username, email, password, role } = req.body;
 
     if (!username || !email || !password || !role) {
-        return res.status(400).json({ error: 'All fields are required' })
-    };
+        return res.status(400).json({ error: 'All fields are required' });
+    }
 
-    if (password.length <= 8) {
-        return res.status(400).json({ error: 'Password must be at least 8 characters' })
-    };
+    if (password.length < 8) {
+        return res.status(400).json({ error: 'Password must be at least 8 characters' });
+    }
 
     if (!/\S+@\S+\.\S+/.test(email)) {
         return res.status(400).json({ error: 'Invalid email format' });
@@ -56,7 +57,6 @@ const signup = async (req, res) => {
         }
 
         const salt = await bcrypt.genSalt(10);
-
         const hashedPassword = await bcrypt.hash(password.trim(), salt);
 
         const result = await client.query(
@@ -64,7 +64,7 @@ const signup = async (req, res) => {
             [username.trim(), email.trim().toLowerCase(), hashedPassword]
         );
 
-        if (result.rows.length === 0) {
+        if (!result.rows.length) {
             await client.query('ROLLBACK');
             return res.status(500).json({ error: 'User creation failed' });
         }
@@ -74,24 +74,43 @@ const signup = async (req, res) => {
             [result.rows[0].userid, role]
         );
 
-        if (rolesResult.rows.length === 0) {
-            console.log(rolesResult.fields)
-            console.error('Role assignment failed for userid:', result.rows[0].userid);
+        if (!rolesResult.rows.length) {
             await client.query('ROLLBACK');
             return res.status(500).json({ error: 'Assigning role failed' });
         }
 
+        await client.query('COMMIT');
+
         const user = result.rows[0];
         const userRole = rolesResult.rows[0].role;
 
-        await client.query('COMMIT');
+        const accessToken = createAccessToken({
+            userid: user.userid,
+            role: userRole
+        });
 
-        const token = jwt.sign({ userid: user.userid, username: user.username, role: userRole }, process.env.SECRET_KEY, { expiresIn: process.env.TOKEN_EXPIRE });
+        const { token: refreshToken, tokenId } = createRefreshToken(user.userid, userRole);
 
-        res.status(201).json({ user: { userid: user.userid, username: user.username, role: userRole }, token });
+        await redis.set(
+            `refresh:${tokenId}`,
+            user.userid,
+            "EX",
+            60 * 60 * 24 * 30 // 30 days
+        );
+
+        res.status(201).json({
+            user: {
+                userid: user.userid,
+                username: user.username,
+                role: userRole
+            },
+            accessToken,
+            refreshToken
+        });
+
     } catch (err) {
         await client.query('ROLLBACK');
-        console.error(err);
+        console.error('Signup error:', err);
         res.status(500).json({ error: 'Server error' });
     } finally {
         client.release();
