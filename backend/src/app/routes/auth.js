@@ -6,6 +6,10 @@ const auth = require('../middleware/auth/auth');
 const logout = require('../controllers/auth/logout');
 const changeName = require('../controllers/auth/changename');
 const refresh = require('../controllers/auth/refresh');
+const changeEmail = require('../controllers/auth/changeemail');
+
+// Change email route
+router.post('/changeemail', auth(), changeEmail);
 
 // Refresh token route
 router.post('/refresh', refresh);
