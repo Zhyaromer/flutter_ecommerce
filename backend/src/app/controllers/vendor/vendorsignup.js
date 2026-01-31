@@ -39,7 +39,7 @@ const vendorSignup = async (req, res) => {
     }
 
     for (const phone of phoneNumber) {
-        if (!/^(0?7[3-9]\d{8})$/.test(phone)) {
+        if (!/^(07[3-9]\d{8})$/.test(phone)) {
             return res.status(400).json({ error: "Invalid Iraqi phone number format" });
         }
     }
@@ -139,10 +139,17 @@ const vendorSignup = async (req, res) => {
         await client.query('COMMIT');
         res.status(201).json({ message: 'Vendor created successfully', vendor });
     } catch (error) {
+        console.error('Error during vendor signup:', error);
         if (error.code === '23505' && error.detail.includes('username')) {
             return res.status(400).json({ message: 'Username is already taken' });
         } else if (error.code === '23505' && error.detail.includes('email')) {
             return res.status(400).json({ message: 'Email is already registered' });
+        } else if (error.code === '23505' && error.detail.includes('phonenumber')) {
+            return res.status(400).json({ message: 'One of the phone numbers is already registered or duplicated' });
+        } else if (error.code === '23505' && error.detail.includes('vendorid, address, city')) {
+            return res.status(400).json({ message: 'One of the vendor locations is already registered or duplicated' });
+        } else if (error.code === '23505' && error.detail.includes('vendorid, url')) {
+            return res.status(400).json({ message: 'One of the social media is already registered or duplicated' });
         }
         res.status(500).json({ error: 'Internal server error' });
     } finally {
