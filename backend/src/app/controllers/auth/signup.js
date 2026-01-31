@@ -6,7 +6,7 @@ const { createAccessToken, createRefreshToken } = require('../../utils/tokens');
 require('dotenv').config();
 
 const signup = async (req, res) => {
-    const { username, email, password, role } = req.body;
+    const { username, email, password, role, intrests } = req.body;
 
     if (!username || !email || !password || !role) {
         return res.status(400).json({ error: 'All fields are required' });
@@ -79,6 +79,38 @@ const signup = async (req, res) => {
             return res.status(500).json({ error: 'Assigning role failed' });
         }
 
+        if (intrests && Array.isArray(intrests) && intrests.length > 0 && intrests.length < 4) {
+            const categoryids = [];
+
+            for (const intrest of intrests) {
+                const categoryResult = await client.query(
+                    'SELECT categoryid FROM categories WHERE name = $1',
+                    [intrest.trim().toLowerCase()]
+                );
+
+                if (categoryResult.rows.length) {
+                    categoryids.push(categoryResult.rows[0].categoryid);
+                }
+            }
+
+            if (categoryids.length === 0) {
+                await client.query('ROLLBACK');
+                return res.status(400).json({ error: 'No valid interests found' });
+            }
+
+            if (categoryids.length > 0) {
+                const values = categoryids
+                    .map((_, index) => `($1, $${index + 2})`)
+                    .join(', ');
+
+                const params = [result.rows[0].userid, ...categoryids];
+
+                const query = `INSERT INTO user_category_preferences (userid, categoryid) VALUES ${values}`;
+
+                await client.query(query, params);
+            }
+        }
+
         await client.query('COMMIT');
 
         const user = result.rows[0];
@@ -110,7 +142,6 @@ const signup = async (req, res) => {
 
     } catch (err) {
         await client.query('ROLLBACK');
-        console.error('Signup error:', err);
         res.status(500).json({ error: 'Server error' });
     } finally {
         client.release();
