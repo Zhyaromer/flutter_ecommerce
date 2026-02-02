@@ -137,7 +137,7 @@ const vendorSignup = async (req, res) => {
         }
 
         await client.query('COMMIT');
-        res.status(201).json({ message: 'Vendor created successfully', vendor });
+        res.status(201).json({ message: 'Vendor created successfully', vendor: { vendorid: vendor.vendorid, username: vendor.username } });
     } catch (error) {
         console.error('Error during vendor signup:', error);
         if (error.code === '23505' && error.detail.includes('username')) {
