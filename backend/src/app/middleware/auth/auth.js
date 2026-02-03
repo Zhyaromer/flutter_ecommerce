@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 
 const auth = (roles = []) => {
     if (typeof roles === "string") roles = [roles];
-
     return (req, res, next) => {
         const authHeader = req.headers.authorization;
         if (!authHeader?.startsWith("Bearer ")) {
@@ -23,6 +22,7 @@ const auth = (roles = []) => {
             req.user = decoded;
             next();
         } catch {
+            console.log('Token verification failed');
             res.sendStatus(401);
         }
     };

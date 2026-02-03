@@ -6,6 +6,7 @@ const cors = require('cors');
 const authRoutes = require('./src/app/routes/auth');
 const vendorRoutes = require('./src/app/routes/vendor');
 const addressRoutes = require('./src/app/routes/address');
+const interestsRoutes = require('./src/app/routes/interests');
 
 app.use(cors({
     origin: '*',
@@ -18,6 +19,7 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/auth', authRoutes);
 app.use('/vendor', vendorRoutes);
 app.use('/address', addressRoutes);
+app.use('/interests', interestsRoutes);
 
 //test route
 app.get('/', (req, res) => {
